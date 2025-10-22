@@ -10,7 +10,7 @@ public class UnixTimeConverter : JsonConverter<DateTimeOffset>
         JsonSerializerOptions options)
     {
         var unixTimeSeconds = reader.GetInt64();
-        var dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(unixTimeSeconds);
+        var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimeSeconds);
 
         return dateTimeOffset;
     }
