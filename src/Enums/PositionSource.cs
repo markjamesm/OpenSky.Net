@@ -1,6 +1,6 @@
 namespace OpenSky.Net.Enums;
 
-public enum EPositionSource
+public enum PositionSource
 {
     Adsb = 0,
     Asterix = 1,
