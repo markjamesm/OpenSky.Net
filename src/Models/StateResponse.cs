@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using OpenSky.Net.Converters;
+
 namespace OpenSky.Net.Models;
 
 public class StateResponse
@@ -6,11 +9,13 @@ public class StateResponse
     /// The time which the state vectors in this response are associated with.
     /// All vectors represent the state of a vehicle with the interval [time - 1, time].
     /// </summary>
+    [JsonConverter(typeof(UnixTimeConverter))]
     public DateTimeOffset? Time { get; set; }
     
     /// <summary>
     /// The state of an aircraft is a summary of all tracking information (mainly position,
     /// velocity, and identity) at a certain point in time.
     /// </summary>
+    [JsonConverter(typeof(StateVectorConverter))]
     public IReadOnlyList<StateVector>? StateVectors { get; set; }
 }
