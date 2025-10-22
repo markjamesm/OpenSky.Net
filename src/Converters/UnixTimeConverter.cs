@@ -1,0 +1,22 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace OpenSky.Net.Converters;
+
+public class UnixTimeConverter : JsonConverter<DateTimeOffset>
+{
+    public override DateTimeOffset Read(ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
+    {
+        var unixTimeSeconds = reader.GetInt64();
+        var dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(unixTimeSeconds);
+
+        return dateTimeOffset;
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value);
+    }
+}
