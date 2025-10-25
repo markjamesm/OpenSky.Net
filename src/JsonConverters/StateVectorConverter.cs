@@ -1,6 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using OpenSky.Net.Helpers;
+using OpenSky.Net.Enums;
 using OpenSky.Net.Models;
 
 namespace OpenSky.Net.JsonConverters;
@@ -9,68 +9,100 @@ public class StateVectorConverter : JsonConverter<List<StateVector>>
 {
     public override List<StateVector> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var stateVectors = new List<StateVector>();
-
         // The OpenSky API returns states as an array of arrays
-        if (reader.TokenType == JsonTokenType.StartArray)
-        {
-            while (reader.Read())
+        
+            var list = new List<StateVector>();
+            if (reader.TokenType != JsonTokenType.StartArray) throw new JsonException();
+
+            reader.Read();
+            while (reader.TokenType == JsonTokenType.StartArray)
             {
-                if (reader.TokenType == JsonTokenType.EndArray)
-                {
-                    break;
-                }
-
-                if (reader.TokenType == JsonTokenType.StartArray)
-                {
-                    var rawStateVectors = new List<object?>();
-
-                    while (reader.Read())
-                    {
-                        if (reader.TokenType == JsonTokenType.EndArray)
-                        {
-                            var stateVector = StateVectorMapper.MapToStateVector(rawStateVectors);
-                            stateVectors.Add(stateVector);
-                            break;
-                        }
-
-                        if (reader.TokenType == JsonTokenType.String)
-                        {
-                            rawStateVectors.Add(reader.GetString());
-                        }
-
-                        if (reader.TokenType == JsonTokenType.Number)
-                        {
-                            if (reader.TryGetSingle(out var x))
-                            {
-                                rawStateVectors.Add(x);
-                            }
-
-                            if (!reader.TryGetDouble(out var i))
-                            {
-                                rawStateVectors.Add(null);
-                            }
-                        }
-
-                        if (reader.TokenType is JsonTokenType.True or JsonTokenType.False)
-                        {
-                            rawStateVectors.Add(reader.GetBoolean());
-                        }
-
-                        if (reader.TokenType is JsonTokenType.Null or JsonTokenType.None)
-                        {
-                            rawStateVectors.Add(null);
-                        }
-                    }
-                }
+                list.Add(ReadSingleState(ref reader));
+                reader.Read();
             }
-        }
-
-        return stateVectors;
+            return list;
     }
 
     public override void Write(Utf8JsonWriter writer, List<StateVector> value, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
+    }
+    
+    private StateVector ReadSingleState(ref Utf8JsonReader reader)
+    {
+        var sv = new StateVector();
+        
+        reader.Read(); 
+        sv.Icao24 = reader.GetString() ?? "";
+        
+        reader.Read(); 
+        sv.Callsign = reader.TokenType == JsonTokenType.String ? reader.GetString() : null;
+        
+        reader.Read(); 
+        sv.OriginCountry = reader.GetString() ?? "";
+        
+        reader.Read(); 
+        sv.TimePosition = reader.TokenType == JsonTokenType.Number ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reader.GetInt64())) : null;
+        
+        reader.Read(); 
+        sv.LastContactTime = reader.TokenType == JsonTokenType.Number ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reader.GetInt64())) : null;
+        
+        reader.Read();
+        sv.Longitude = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read(); 
+        sv.Latitude = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read(); 
+        sv.BaroAltitude = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read(); 
+        sv.OnGround = reader.TokenType is JsonTokenType.True or JsonTokenType.False ? reader.GetBoolean() : null;
+        
+        reader.Read(); 
+        sv.Velocity = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read(); 
+        sv.TrueTrack = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read(); 
+        sv.VerticalRate = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read();
+        if (reader.TokenType == JsonTokenType.StartArray)
+        {
+            var sensors = new List<int>();
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.EndArray)
+                {
+                    sv.Sensors = sensors;
+                    break;
+                }
+                
+                sensors.Add(reader.GetInt32());
+            }
+        }
+
+        if (reader.TokenType == JsonTokenType.Null)
+        {
+            sv.Sensors = null;
+        }
+
+        reader.Read(); 
+        sv.GeoAltitude = reader.TokenType == JsonTokenType.Number ? reader.GetSingle() : null;
+        
+        reader.Read(); 
+        sv.Squawk = reader.GetString() ?? "";
+        
+        reader.Read(); 
+        sv.Spi = reader.TokenType is JsonTokenType.True or JsonTokenType.False ? reader.GetBoolean() : null;
+        
+        reader.Read();
+        sv.PositionSource = reader.TokenType == JsonTokenType.Number ? (PositionSource)reader.GetSingle() : null;
+        
+        reader.Read(); // end inner array
+        
+        return sv;
     }
 }
