@@ -72,7 +72,7 @@ public class StateVector
     /// IDs of the receivers which contributed to this state vector. Is null
     /// if no filtering for sensor was used in the request.
     /// </summary>
-    public int[]? Sensors { get; set; }
+    public List<int>? Sensors { get; set; }
     
     /// <summary>
     /// Geometric altitude in meters. Can be null.
@@ -94,8 +94,9 @@ public class StateVector
     /// </summary>
     public PositionSource? PositionSource { get; set; } 
     
-    /// <summary>
-    /// Aircraft category.
-    /// </summary>
-    public Category? Category { get; set; }
+    // <summary>
+    // Aircraft category. Is listed in the API documentation but
+    // is not present in actual responses.
+    // </summary>
+    // public Category? Category { get; set; }
 }
