@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace OpenSky.Net.Converters;
+namespace OpenSky.Net.JsonConverters;
 
 public class UnixTimeConverter : JsonConverter<DateTimeOffset>
 {
