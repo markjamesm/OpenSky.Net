@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using OpenSky.Net.Converters;
+using OpenSky.Net.JsonConverters;
 
 namespace OpenSky.Net.Models;
 
@@ -16,6 +16,7 @@ public class StateResponse
     /// The state of an aircraft is a summary of all tracking information (mainly position,
     /// velocity, and identity) at a certain point in time.
     /// </summary>
+    [JsonPropertyName("states")]
     [JsonConverter(typeof(StateVectorConverter))]
     public IReadOnlyList<StateVector>? StateVectors { get; set; }
 }
