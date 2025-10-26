@@ -72,7 +72,7 @@ public class StateVector
     /// IDs of the receivers which contributed to this state vector. Is null
     /// if no filtering for sensor was used in the request.
     /// </summary>
-    public List<int>? Sensors { get; set; }
+    public IReadOnlyList<int>? Sensors { get; set; }
     
     /// <summary>
     /// Geometric altitude in meters. Can be null.
