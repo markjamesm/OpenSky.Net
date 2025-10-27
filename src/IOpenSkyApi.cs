@@ -6,5 +6,5 @@ namespace OpenSky.Net;
 public interface IOpenSkyApi
 {
     [Get("/states/all")]
-    Task<StateResponse> GetAllStateVectors(string callsign, CancellationToken cancellationToken);
+    Task<StateResponse> GetAllStateVectors(CancellationToken cancellationToken, StateRequest? stateRequest = null);
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Options;
+using OpenSky.Net.Models;
 using Refit;
 
 namespace OpenSky.Net;
@@ -11,7 +12,7 @@ public partial class OpenSkyClient
     private readonly RateLimiter _rateLimiter;
 
     // public int MaxApiCallsPerMinute => _rateLimiter.MaxCallsPerMinute;
-    
+
     internal OpenSkyClient(IOpenSkyApi openSkyApi, IOptions<OpenSkyOptions> options, RateLimiter rateLimiter)
     {
         _openSkyApi = openSkyApi;
@@ -30,7 +31,7 @@ public partial class OpenSkyClient
             // Add refit settings
         });
     }
-    
+
     private async Task<TResponse> WrapApiCall<TResponse>(Func<Task<TResponse>> apiCall,
         CancellationToken cancellationToken)
     {
@@ -42,4 +43,7 @@ public partial class OpenSkyClient
 
         return await apiCall().ConfigureAwait(false);
     }
+
+    public Task<StateResponse> GetAllStateVectors(StateRequest? stateRequest = null, CancellationToken cancellationToken = default) =>
+        WrapApiCall(() => _openSkyApi.GetAllStateVectors(cancellationToken, stateRequest), cancellationToken);
 }
