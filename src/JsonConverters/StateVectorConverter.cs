@@ -5,9 +5,9 @@ using OpenSky.Net.Models;
 
 namespace OpenSky.Net.JsonConverters;
 
-public class StateVectorConverter : JsonConverter<List<StateVector>>
+public class StateVectorConverter : JsonConverter<IReadOnlyList<StateVector>>
 {
-    public override List<StateVector> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override IReadOnlyList<StateVector> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // The OpenSky API returns states as an array of arrays
         
@@ -23,7 +23,7 @@ public class StateVectorConverter : JsonConverter<List<StateVector>>
             return list;
     }
 
-    public override void Write(Utf8JsonWriter writer, List<StateVector> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, IReadOnlyList<StateVector> value, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
     }
@@ -101,7 +101,12 @@ public class StateVectorConverter : JsonConverter<List<StateVector>>
         reader.Read();
         sv.PositionSource = reader.TokenType == JsonTokenType.Number ? (PositionSource)reader.GetSingle() : null;
         
-        reader.Read(); // end inner array
+        reader.Read();
+        if (reader.TokenType == JsonTokenType.Number)
+        {
+            sv.Category = (Category)reader.GetInt32();
+            reader.Read();
+        }
         
         return sv;
     }
