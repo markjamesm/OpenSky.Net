@@ -95,8 +95,7 @@ public class StateVector
     public PositionSource? PositionSource { get; set; } 
     
     // <summary>
-    // Aircraft category. Is listed in the API documentation but
-    // is not present in actual responses.
+    // Aircraft category
     // </summary>
-    // public Category? Category { get; set; }
+    public Category? Category { get; set; }
 }
