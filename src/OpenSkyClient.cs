@@ -44,6 +44,12 @@ public partial class OpenSkyClient
         return await apiCall().ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// The following API call can be used to retrieve any state vector from the OpenSky API.
+    /// </summary>
+    /// <param name="stateRequest">The StateRequest parameters.</param>
+    /// <param name="cancellationToken">Optional cancellation token for cancelling the API request.</param>
+    /// <returns></returns>
     public Task<StateResponse> GetAllStateVectors(StateRequest? stateRequest = null, CancellationToken cancellationToken = default) =>
         WrapApiCall(() => _openSkyApi.GetAllStateVectors(cancellationToken, stateRequest), cancellationToken);
 }
