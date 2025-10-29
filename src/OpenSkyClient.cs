@@ -50,6 +50,9 @@ public partial class OpenSkyClient
     /// <param name="stateRequest">The StateRequest parameters.</param>
     /// <param name="cancellationToken">Optional cancellation token for cancelling the API request.</param>
     /// <returns></returns>
-    public Task<StateResponse> GetAllStateVectors(StateRequest? stateRequest = null, CancellationToken cancellationToken = default) =>
-        WrapApiCall(() => _openSkyApi.GetAllStateVectors(cancellationToken, stateRequest), cancellationToken);
+    public Task<StateResponse> GetAllStateVectorsAsync(StateRequest? stateRequest = null, CancellationToken cancellationToken = default) =>
+        WrapApiCall(() => _openSkyApi.GetAllStateVectorsAsync(cancellationToken, stateRequest), cancellationToken);
+
+    public Task<MetadataResponse> GetAircraftMetadataAsync(string icao24, CancellationToken cancellationToken = default) =>
+        WrapApiCall(() => _openSkyApi.GetAircraftMetadataAsync(icao24, cancellationToken), cancellationToken);
 }

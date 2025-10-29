@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace OpenSky.Net.JsonConverters;
 
-public class UnixTimeConverter : JsonConverter<DateTimeOffset>
+internal sealed class UnixTimeConverterSeconds : JsonConverter<DateTimeOffset>
 {
     public override DateTimeOffset Read(ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -11,7 +11,7 @@ public class UnixTimeConverter : JsonConverter<DateTimeOffset>
     {
         var unixTimeSeconds = reader.GetInt64();
         var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimeSeconds);
-
+        
         return dateTimeOffset;
     }
 
