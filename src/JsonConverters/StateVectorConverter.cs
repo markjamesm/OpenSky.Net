@@ -5,7 +5,7 @@ using OpenSky.Net.Models;
 
 namespace OpenSky.Net.JsonConverters;
 
-public class StateVectorConverter : JsonConverter<IReadOnlyList<StateVector>>
+internal sealed class StateVectorConverter : JsonConverter<IReadOnlyList<StateVector>>
 {
     public override IReadOnlyList<StateVector> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
