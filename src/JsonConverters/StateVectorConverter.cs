@@ -23,9 +23,17 @@ internal sealed class StateVectorConverter : JsonConverter<IReadOnlyList<StateVe
             return list;
     }
 
-    public override void Write(Utf8JsonWriter writer, IReadOnlyList<StateVector> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, IReadOnlyList<StateVector>? value, JsonSerializerOptions options)
     {
-        throw new NotImplementedException();
+        if (value == null)
+        {
+            writer.WriteNullValue();
+        }
+
+        else
+        {
+            writer.WriteStringValue(value?.ToString());
+        }
     }
     
     private StateVector ReadSingleState(ref Utf8JsonReader reader)
