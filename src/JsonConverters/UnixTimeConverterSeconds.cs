@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace OpenSky.Net.JsonConverters;
 
-internal sealed class UnixTimeConverterSeconds : JsonConverter<DateTimeOffset>
+internal sealed class UnixTimeConverterSeconds : JsonConverter<DateTimeOffset?>
 {
-    public override DateTimeOffset Read(ref Utf8JsonReader reader,
+    public override DateTimeOffset? Read(ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options)
     {
@@ -15,8 +15,16 @@ internal sealed class UnixTimeConverterSeconds : JsonConverter<DateTimeOffset>
         return dateTimeOffset;
     }
 
-    public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, DateTimeOffset? value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue(value);
+        if (value == null)
+        {
+            writer.WriteNullValue();
+        }
+
+        else
+        {
+            writer.WriteStringValue(value?.ToString());
+        }
     }
 }
