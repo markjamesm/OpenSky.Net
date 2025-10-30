@@ -7,17 +7,17 @@ public class StateVector
     /// <summary>
     /// Unique ICAO 24-bit address of the transponder in hex string representation.
     /// </summary>
-    public string? Icao24 { get; set; }
+    public string Icao24 { get; set; } = "";
 
     /// <summary>
     /// Callsign of the vehicle (8 chars). Can be null if no callsign has been received.
     /// </summary>
-    public string? Callsign { get; set; }
+    public string Callsign { get; set; } = "";
 
     /// <summary>
     /// Country name inferred from the ICAO 24-bit address.
     /// </summary>
-    public string? OriginCountry { get; set; }
+    public string OriginCountry { get; set; } = "";
 
     /// <summary>
     /// Unix timestamp (seconds) for the last position update. Can be null if no
@@ -82,7 +82,7 @@ public class StateVector
     /// <summary>
     /// The transponder code aka Squawk. Can be null.
     /// </summary>
-    public string? Squawk { get; set; }
+    public string Squawk { get; set; } = "";
     
     /// <summary>
     /// Whether flight status indicates special purpose indicator.

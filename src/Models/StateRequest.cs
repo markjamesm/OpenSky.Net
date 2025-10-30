@@ -17,7 +17,7 @@ public class StateRequest
     /// the state vectors of all aircraft are returned (optional).
     /// </summary>
     [AliasAs("icao24")]
-    public string? Icao24 { get; set; }
+    public string Icao24 { get; set; } = "";
     
     /// <summary>
     /// Request the category of aircraft by setting the extended parameter to 1 (optional).
