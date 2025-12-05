@@ -17,7 +17,7 @@ var openSkyApi = new OpenSkyClient(int maxApiCallsPerMinute);
 ```csharp
 GetAllStateVectorsAsync(StateRequest stateRequest)
 ```
-- Retrieves all [state vectors](https://openskynetwork.github.io/opensky-api/rest.html#all-state-vectors) from the OpenSky API.
+- Retrieve all [state vectors](https://openskynetwork.github.io/opensky-api/rest.html#all-state-vectors) from the OpenSky API.
 
 ```csharp
 GetFlightsAsync(FlightRequest flightRequest)
