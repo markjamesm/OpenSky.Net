@@ -45,7 +45,7 @@ public partial class OpenSkyClient
     }
 
     /// <summary>
-    /// Retrieve any state vector from the OpenSky API.
+    /// Retrieve all state vectors from the OpenSky API.
     /// </summary>
     /// <param name="stateRequest">The StateRequest parameters.</param>
     /// <param name="cancellationToken">Optional cancellation token for cancelling the API request.</param>
